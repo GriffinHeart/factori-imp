@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate factori;
+extern crate factorio;
 
 pub struct Vehicle {
   number_wheels: u8,
@@ -15,7 +15,7 @@ pub struct Cargo {
 }
 
 // We can define multiple with one macro:
-factori!(
+factorio!(
     Vehicle, {
         default {
             number_wheels = 4,
@@ -31,7 +31,7 @@ factori!(
 );
 
 // Or call the macro twice:
-factori!(
+factorio!(
     Cargo, {
         default {
             weight = 0
