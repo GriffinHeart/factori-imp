@@ -1,29 +1,29 @@
 //! A testing factory library for Rust, inspired by [FactoryBot].
 //!
-//! Factori aims to provide a clean, ergonomic syntax for instantiating test
+//! Factorio aims to provide a clean, ergonomic syntax for instantiating test
 //! objects, without sacrificing type-safety.
 //!
 //! This crate provides:
-//!  - A [`factori!()`] macro which is used to define factories.
+//!  - A [`factorio!()`] macro which is used to define factories.
 //!  - A [`create!()`] macro which is used to instantiate objects from
 //!    factories.
 //!
 //! [FactoryBot]: https://github.com/thoughtbot/factory_bot
-//! [`factori!()`]: macro.factori.html
+//! [`factorio!()`]: macro.factorio.html
 //! [`create!()`]: macro.create.html
 //!
 //! ## Example
 //!
 //! ```
 //! #[macro_use]
-//! extern crate factori;
+//! extern crate factorio;
 //!
 //! pub struct Vehicle {
 //!     number_wheels: u8,
 //!     electric: bool,
 //! }
 //!
-//! factori!(Vehicle, {
+//! factorio!(Vehicle, {
 //!     default {
 //!         number_wheels = 4,
 //!         electric = false,
@@ -57,10 +57,10 @@
 //!
 //! ## How it works
 //!
-//! Behind the scenes, the [`factori!()`] macro generates some extra types to
+//! Behind the scenes, the [`factorio!()`] macro generates some extra types to
 //! encode the default values and mixins for each factory.
 //!
-//! The [`create!()`] macro expects the generated `_Factori` types to be in
+//! The [`create!()`] macro expects the generated `_Factorio` types to be in
 //! scope. If the factory is instantiated in the same module that it is
 //! defined, this will work as expected. If the factory is defined in a
 //! separate module, then it is recommended that you do a glob import to bring
@@ -72,7 +72,7 @@
 //! having them cluttering up your project's namespaces.
 //!
 //! ```
-//! # #[macro_use] extern crate factori;
+//! # #[macro_use] extern crate factorio;
 //! # fn main() { }
 //! #
 //! struct Vehicle {
@@ -82,7 +82,7 @@
 //! mod factories {
 //!     use super::Vehicle;
 //!
-//!     factori!(Vehicle, {
+//!     factorio!(Vehicle, {
 //!         default {
 //!             number_wheels = 4
 //!         }
@@ -101,12 +101,12 @@
 //! }
 //! ```
 //!
-//! The implementation details of the [`factori!()`] and [`create!()`] macros
+//! The implementation details of the [`factorio!()`] and [`create!()`] macros
 //! are considered private and you should not rely on any of the generated
 //! types or their names. However, the implementation is quite simple and you
 //! are encouraged to run [`cargo-expand`] in order to see the generated code.
 //!
-//! The generated types are all prefixed with `_Factori` and are unlikely to
+//! The generated types are all prefixed with `_Factorio` and are unlikely to
 //! clash with any types in your crate. It is a little gross but it is all
 //! in the name of testing convenience.
 //!
@@ -124,7 +124,7 @@
 
 /// A macro to instantiate an instance of a factory.
 ///
-/// The type must already have had a factory defined using the [`factori!()`]
+/// The type must already have had a factory defined using the [`factorio!()`]
 /// macro.
 ///
 /// The `create!()` macro accepts:
@@ -148,7 +148,7 @@
 /// # Example
 ///
 /// ```
-/// # #[macro_use] extern crate factori;
+/// # #[macro_use] extern crate factorio;
 /// #
 /// struct Vehicle {
 ///     registration: &'static str,
@@ -156,7 +156,7 @@
 ///     number_seats: u8,
 /// }
 ///
-/// factori!(Vehicle, {
+/// factorio!(Vehicle, {
 ///     default {
 ///         registration = "",
 ///         number_wheels = 4,
@@ -180,18 +180,18 @@
 /// }
 /// ```
 ///
-/// [`factori!()`]: macro.factori.html
+/// [`factorio!()`]: macro.factori.html
 #[macro_export]
 macro_rules! create {
     // We define a simple macro so that the documentation doesn't state this
-    // is a re-export from factori-impl. This also allows us to write docs here.
+    // is a re-export from factorio-impl. This also allows us to write docs here.
     ($($input:tt)*) => {
-        $crate::factori_impl::create!($($input)*);
+        $crate::factorio_impl::create!($($input)*);
     }
 }
 
 #[doc(hidden)]
-pub use factori_impl;
+pub use factorio_impl;
 
 /// A macro to define a factory for a type.
 ///
@@ -215,14 +215,14 @@ pub use factori_impl;
 /// ## Example
 ///
 /// ```
-/// # #[macro_use] extern crate factori;
+/// # #[macro_use] extern crate factorio;
 /// #
 /// struct Order {
 ///     id: u64,
 ///     shipped: bool,
 /// }
 ///
-/// factori!(Order, {
+/// factorio!(Order, {
 ///     default {
 ///         id = 1,
 ///         shipped = false,
@@ -247,7 +247,7 @@ pub use factori_impl;
 /// This isn't always possible, such as for types which can't be constructed
 /// with struct literal syntax (enums and tuple structs) or types with private
 /// fields. For these more complex types, a `builder` block can be provided to
-/// tell `factori!()` how to turn the fields in the `default` and `mixin`
+/// tell `factorio!()` how to turn the fields in the `default` and `mixin`
 /// blocks into the factory's type.
 ///
 /// When a `builder` block is provided, the fields in `default` define an
@@ -256,11 +256,11 @@ pub use factori_impl;
 /// block.
 ///
 /// ```
-/// # #[macro_use] extern crate factori;
+/// # #[macro_use] extern crate factorio;
 /// #
 /// pub struct Order(u64, bool);
 ///
-/// factori!(Order, {
+/// factorio!(Order, {
 ///     default {
 ///         id: u64 = 1,
 ///         shipped: bool = false,
@@ -283,11 +283,11 @@ pub use factori_impl;
 /// }
 /// ```
 #[macro_export]
-macro_rules! factori {
+macro_rules! factorio {
     // We define a simple macro so that the documentation doesn't state this
-    // is a re-export from factori-impl. This also allows us to write docs here.
+    // is a re-export from factorio-impl. This also allows us to write docs here.
     ($($input:tt)*) => {
-        $crate::factori_impl::define!($($input)*);
+        $crate::factorio_impl::define!($($input)*);
     }
 }
 

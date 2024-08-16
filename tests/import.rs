@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate factori;
+extern crate factorio;
 
 pub struct Vehicle {
   number_wheels: u8,
@@ -9,7 +9,7 @@ pub struct Vehicle {
 pub mod vehicle_factory {
   use super::Vehicle;
 
-  factori!(Vehicle, {
+  factorio!(Vehicle, {
       default {
           number_wheels = 4,
           electric = false,
