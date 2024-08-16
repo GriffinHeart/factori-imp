@@ -10,5 +10,5 @@ format:
 	cd factorio-impl; cargo fmt
 
 clippy:
-	cargo clippy --all-targets
-	cd factorio-impl; cargo clippy --all-targets
+	cargo clippy --all-targets --message-format=short
+	cd factorio-impl; cargo clippy --all-targets --message-format=short

@@ -202,8 +202,7 @@ impl Definition {
       .fields
       .iter()
       .zip(&self.default.types)
-      .filter(|(_, ty)| ty.is_none())
-      .next();
+      .find(|(_, ty)| ty.is_none());
 
     if let Some((name, _)) = missing_type {
       if self.builder.is_some() {
@@ -358,7 +357,7 @@ impl Definition {
     }
   }
 
-  fn into_token_stream(&self) -> TokenStream {
+  fn into_token_stream(self) -> TokenStream {
     let builder = self.generate_builder();
     let mixins = self.generate_mixins();
 
