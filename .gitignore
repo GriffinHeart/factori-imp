@@ -1,6 +1,6 @@
 /Cargo.lock
-/factori-impl/Cargo.lock
-/factori-impl/target/
+/factorio-impl/Cargo.lock
+/factorio-impl/target/
 /target
 /rls
 **/*.rs.bk
