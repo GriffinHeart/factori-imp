@@ -43,7 +43,7 @@ factorio!(
 fn vehicle() {
   let default = create!(Vehicle);
   assert_eq!(default.number_wheels, 4);
-  assert_eq!(default.electric, false);
+  assert!(!default.electric);
 }
 
 #[test]
@@ -68,5 +68,5 @@ fn override_field() {
 fn multiple_fields() {
   let multiple = create!(Vehicle, number_wheels: 8, electric: true);
   assert_eq!(multiple.number_wheels, 8);
-  assert_eq!(multiple.electric, true);
+  assert!(multiple.electric);
 }

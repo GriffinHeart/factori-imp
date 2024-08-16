@@ -52,7 +52,7 @@ factorio!(Vehicle, {
 fn simple_struct() {
   let default = create!(Vehicle);
   assert_eq!(default.number_wheels(), 4);
-  assert_eq!(default.electric(), false);
+  assert!(!default.electric());
 }
 
 #[test]
@@ -65,19 +65,19 @@ fn override_field() {
 fn one_mixin() {
   let bike = create!(Vehicle, :bike);
   assert_eq!(bike.number_wheels(), 2);
-  assert_eq!(bike.electric(), false);
+  assert!(!bike.electric());
 }
 
 #[test]
 fn mixin_and_override() {
   let electric_bike = create!(Vehicle, :bike, electric: true);
   assert_eq!(electric_bike.number_wheels(), 2);
-  assert_eq!(electric_bike.electric(), true);
+  assert!(electric_bike.electric());
 }
 
 #[test]
 fn two_mixins() {
   let electric_bike = create!(Vehicle, :bike, :electric);
   assert_eq!(electric_bike.number_wheels(), 2);
-  assert_eq!(electric_bike.electric(), true);
+  assert!(electric_bike.electric());
 }
