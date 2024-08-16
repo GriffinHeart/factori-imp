@@ -64,10 +64,12 @@ More examples are available in the
 
 ## Testing
 
+Install [cargo-nextest](https://nexte.st/)
+
 Run:
 
 ```sh
-cargo test
+make test
 ```
 
 ## License
