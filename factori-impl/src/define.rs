@@ -114,15 +114,20 @@ impl Parse for TransientBlock {
       // parse a: type = value and  take ending , if there
       fields.push(inner.parse()?); // a
       inner.parse::<Token![:]>()?; // :
-      types.push(inner.parse()?);  // type
+      types.push(inner.parse()?); // type
       inner.parse::<Token![=]>()?; // =
       values.push(inner.parse()?); // value
-      if inner.peek(Token![,]) {   // maybe ,
+      if inner.peek(Token![,]) {
+        // maybe ,
         inner.parse::<Token![,]>()?;
       }
     }
 
-    Ok(Self { fields, values, types })
+    Ok(Self {
+      fields,
+      values,
+      types,
+    })
   }
 }
 
@@ -211,6 +216,31 @@ impl Definition {
     None
   }
 
+  fn generate_transient_parts(&self) -> (TokenStream, TokenStream, TokenStream) {
+    if let Some(transient) = &self.transient {
+      let trans_fields = &transient.fields;
+      let trans_types = &transient.types;
+      let trans_values = &transient.values;
+
+      (
+        quote! {
+          #( pub #trans_fields: #trans_types ),*
+        },
+        quote! {
+          #( #trans_fields: #trans_values ),*
+        },
+        quote! {
+          #(
+            #[allow(unused_variable)]
+            let #trans_fields = self.#trans_fields;
+          )*
+        },
+      )
+    } else {
+      (quote! {}, quote! {}, quote! {})
+    }
+  }
+
   fn generate_builder(&self) -> TokenStream {
     let ident_builder = ident_builder(&self.ty);
 
@@ -218,6 +248,9 @@ impl Definition {
     let fields = &self.default.fields;
     let types = &self.default.types;
     let values = &self.default.values;
+
+    let (transient_field_decl, transient_default_values, transient_build_group) =
+      self.generate_transient_parts();
 
     match &self.builder {
       None => {
@@ -248,12 +281,16 @@ impl Definition {
             #[allow(non_camel_case_types, dead_code)]
             pub struct #ident_builder {
                 #( pub #fields: #types ),*
+                ,
+                #transient_field_decl
             }
 
             impl factori::Default for #ident_builder {
                 fn default() -> Self {
                     #ident_builder {
                         #( #fields: #values ),*
+                        ,
+                        #transient_default_values
                     }
                 }
             }
@@ -266,6 +303,7 @@ impl Definition {
                         #[allow(unused_variable)]
                         let #fields = self.#fields;
                     )*
+                    #transient_build_group
 
                     #builder
                 }
