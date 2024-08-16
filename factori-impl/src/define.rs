@@ -179,6 +179,10 @@ impl Parse for Definition {
       }
     }
 
+    if transient.is_some() && builder.is_none() {
+      return Err(inner.error("transient attributes require a builder {} block"));
+    }
+
     let default = default.ok_or_else(|| inner.error("missing default {} block"))?;
 
     Ok(Self {
