@@ -1,9 +1,9 @@
 # Factorio
 
-A testing factory library for Rust, inspired by
+A testing factory library for Rust, inspired by:
 
-[FactoryBot](https://github.com/thoughtbot/factory_bot). 🤖 🦀
-[mjkillough/factori](https://github.com/mjkillough/factori)
+- [FactoryBot](https://github.com/thoughtbot/factory_bot). 🤖 🦀
+- [mjkillough/factori](https://github.com/mjkillough/factori)
 
 A fork of [mjkillough/factori](https://github.com/mjkillough/factori) library,
 to add additional features.
@@ -12,6 +12,10 @@ factorio makes it easy to instantiate your test objects/fixtures in tests while
 providing an ergonomic syntax for defining how they are instantiated.
 
 factorio works on stable Rust >=1.45.
+
+## Differences with factori
+
+- Transient attributes as first class citizens [see tests/transient.rs](https://github.com/GriffinHeart/factorio/blob/main/tests/transient.rs)
 
 ## Documentation
 
@@ -60,7 +64,7 @@ fn main() {
 ```
 
 More examples are available in the
-[`tests/`](https://github.com/mjkillough/factorio/tree/master/tests) directory.
+[`tests/`](https://github.com/GriffinHeart/factorio/tree/main/tests) directory.
 
 ## Testing
 
