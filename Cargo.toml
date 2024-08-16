@@ -14,4 +14,4 @@ edition = "2018"
 travis-ci = { repository = "mjkillough/factori", branch = "master" }
 
 [dependencies]
-factori-impl = { version = "1.1.0", path = "./factori-impl" }
+factorio-impl = { version = "1.1.0", path = "./factorio-impl" }
