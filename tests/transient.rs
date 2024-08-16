@@ -24,7 +24,6 @@ factorio!(User, {
   }
 });
 
-
 #[test]
 fn transient_doesnt_change_anything() {
   let user = create!(User, name: "John".into());
