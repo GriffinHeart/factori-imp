@@ -79,19 +79,19 @@ pub fn create_macro(input: TokenStream) -> TokenStream {
   let mut mixins = mixins.iter();
   let value = if let Some(mixin) = mixins.next() {
     let initial = quote! {
-        factori::Mixin::default(#ident_mixins_enum::#mixin)
+        factorio::Mixin::default(#ident_mixins_enum::#mixin)
     };
     mixins.fold(initial, |acc, mixin| {
       quote! {
-          factori::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
+          factorio::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
       }
     })
   } else {
-    quote! { factori::Default::default () }
+    quote! { factorio::Default::default () }
   };
 
   let quoted = quote! {
-      factori::Builder::build(#ident_builder {
+      factorio::Builder::build(#ident_builder {
           #(
               #fields: #values,
           )*

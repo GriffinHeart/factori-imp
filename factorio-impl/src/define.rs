@@ -262,7 +262,7 @@ impl Definition {
             #[allow(non_camel_case_types)]
             pub type #ident_builder = #ty;
 
-            impl factori::Default for #ident_builder {
+            impl factorio::Default for #ident_builder {
                 fn default() -> Self {
                     #ty {
                         #( #fields: #values ),*
@@ -270,7 +270,7 @@ impl Definition {
                 }
             }
 
-            impl factori::Builder for #ident_builder {
+            impl factorio::Builder for #ident_builder {
                 type Ty = #ty;
 
                 fn build(self) -> Self::Ty {
@@ -289,7 +289,7 @@ impl Definition {
                 #transient_field_decl
             }
 
-            impl factori::Default for #ident_builder {
+            impl factorio::Default for #ident_builder {
                 fn default() -> Self {
                     #ident_builder {
                         #( #fields: #values ),*
@@ -299,7 +299,7 @@ impl Definition {
                 }
             }
 
-            impl factori::Builder for #ident_builder {
+            impl factorio::Builder for #ident_builder {
                 type Ty = #ty;
 
                 fn build(self) -> Self::Ty {
@@ -334,9 +334,9 @@ impl Definition {
             #( #mixin_names ),*
         }
 
-        impl factori::Mixin<#ident_builder> for #ident_mixins_enum {
+        impl factorio::Mixin<#ident_builder> for #ident_mixins_enum {
             fn default(self) -> #ident_builder {
-                self.extend(factori::Default::default())
+                self.extend(factorio::Default::default())
             }
 
             #[allow(unused_variable)]
