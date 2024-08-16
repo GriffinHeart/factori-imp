@@ -91,7 +91,9 @@ pub fn create_macro(input: TokenStream) -> TokenStream {
   };
 
   let quoted = quote! {
-      factorio::Builder::build(#ident_builder {
+      factorio::Builder::build(
+        #[allow(clippy::needless_update)]
+        #ident_builder {
           #(
               #fields: #values,
           )*
