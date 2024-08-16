@@ -293,18 +293,18 @@ macro_rules! factori {
 
 #[doc(hidden)]
 pub trait Builder {
-    type Ty;
+  type Ty;
 
-    fn build(self) -> Self::Ty;
+  fn build(self) -> Self::Ty;
 }
 
 #[doc(hidden)]
 pub trait Default {
-    fn default() -> Self;
+  fn default() -> Self;
 }
 
 #[doc(hidden)]
 pub trait Mixin<T> {
-    fn default(self) -> T;
-    fn extend(self, other: T) -> T;
+  fn default(self) -> T;
+  fn extend(self, other: T) -> T;
 }

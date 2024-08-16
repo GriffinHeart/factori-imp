@@ -2,16 +2,16 @@
 extern crate factori;
 
 pub struct Vehicle {
-    number_wheels: u8,
-    electric: bool,
+  number_wheels: u8,
+  electric: bool,
 }
 
 pub struct Passenger {
-    name: &'static str,
+  name: &'static str,
 }
 
 pub struct Cargo {
-    weight: u8,
+  weight: u8,
 }
 
 // We can define multiple with one macro:
@@ -41,32 +41,32 @@ factori!(
 
 #[test]
 fn vehicle() {
-    let default = create!(Vehicle);
-    assert_eq!(default.number_wheels, 4);
-    assert_eq!(default.electric, false);
+  let default = create!(Vehicle);
+  assert_eq!(default.number_wheels, 4);
+  assert_eq!(default.electric, false);
 }
 
 #[test]
 fn passenger() {
-    let default = create!(Passenger);
-    assert_eq!(default.name, "Michael");
+  let default = create!(Passenger);
+  assert_eq!(default.name, "Michael");
 }
 
 #[test]
 fn cargo() {
-    let default = create!(Cargo);
-    assert_eq!(default.weight, 0);
+  let default = create!(Cargo);
+  assert_eq!(default.weight, 0);
 }
 
 #[test]
 fn override_field() {
-    let tom = create!(Passenger, name: "Tom");
-    assert_eq!(tom.name, "Tom");
+  let tom = create!(Passenger, name: "Tom");
+  assert_eq!(tom.name, "Tom");
 }
 
 #[test]
 fn multiple_fields() {
-    let multiple = create!(Vehicle, number_wheels: 8, electric: true);
-    assert_eq!(multiple.number_wheels, 8);
-    assert_eq!(multiple.electric, true);
+  let multiple = create!(Vehicle, number_wheels: 8, electric: true);
+  assert_eq!(multiple.number_wheels, 8);
+  assert_eq!(multiple.electric, true);
 }
