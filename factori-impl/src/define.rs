@@ -91,10 +91,47 @@ impl Parse for MixinBlock {
   }
 }
 
+struct TransientBlock {
+  fields: Vec<Ident>,
+  values: Vec<Expr>,
+  types: Vec<Type>,
+}
+
+impl Parse for TransientBlock {
+  fn parse(input: ParseStream) -> Result<Self> {
+    let inner;
+    braced!(inner in input);
+
+    let mut fields = Vec::new();
+    let mut values = Vec::new();
+    let mut types = Vec::new();
+
+    loop {
+      if inner.is_empty() {
+        break;
+      }
+
+      // parse a: type = value
+      fields.push(inner.parse()?); // a
+      inner.parse::<Token![:]>()?; // :
+      types.push(inner.parse()?); // type
+      inner.parse::<Token![=]>()?; // =
+      values.push(inner.parse()?); // value
+      // consume , if there
+      if inner.peek(Token![,]) {
+        inner.parse::<Token![,]>()?;
+      }
+    }
+
+    Ok(Self { fields, values, types })
+  }
+}
+
 struct Definition {
   ty: Ident,
 
   default: DefaultBlock,
+  transient: Option<TransientBlock>,
   builder: Option<TokenTree>,
   mixins: Vec<MixinBlock>,
 }
@@ -108,6 +145,7 @@ impl Parse for Definition {
     braced!(inner in input);
 
     let mut default: Option<DefaultBlock> = None;
+    let mut transient: Option<TransientBlock> = None;
     let mut builder = None;
     let mut mixins = Vec::new();
 
@@ -129,6 +167,11 @@ impl Parse for Definition {
         builder = Some(inner.parse()?);
       } else if key == "mixin" {
         mixins.push(inner.parse()?);
+      } else if key == "transient" {
+        if transient.is_some() {
+          return Err(inner.error("transient {} block defined twice"));
+        }
+        transient = Some(inner.parse()?);
       }
     }
 
@@ -139,6 +182,7 @@ impl Parse for Definition {
       default,
       builder,
       mixins,
+      transient,
     })
   }
 }
