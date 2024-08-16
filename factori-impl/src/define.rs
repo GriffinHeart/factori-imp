@@ -111,14 +111,13 @@ impl Parse for TransientBlock {
         break;
       }
 
-      // parse a: type = value
+      // parse a: type = value and  take ending , if there
       fields.push(inner.parse()?); // a
       inner.parse::<Token![:]>()?; // :
-      types.push(inner.parse()?); // type
+      types.push(inner.parse()?);  // type
       inner.parse::<Token![=]>()?; // =
       values.push(inner.parse()?); // value
-      // consume , if there
-      if inner.peek(Token![,]) {
+      if inner.peek(Token![,]) {   // maybe ,
         inner.parse::<Token![,]>()?;
       }
     }
