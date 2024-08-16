@@ -16,88 +16,88 @@ use super::{ident_builder, ident_mixins_enum};
 //     values: vec!['value1', 'value2'],
 // }
 struct Create {
-    ty: Ident,
-    mixins: Vec<Ident>,
-    fields: Vec<Ident>,
-    values: Vec<Expr>,
+  ty: Ident,
+  mixins: Vec<Ident>,
+  fields: Vec<Ident>,
+  values: Vec<Expr>,
 }
 
 impl Parse for Create {
-    fn parse(input: ParseStream) -> Result<Self> {
-        let ty = input.parse()?;
+  fn parse(input: ParseStream) -> Result<Self> {
+    let ty = input.parse()?;
 
-        if input.peek(Token![,]) {
-            input.parse::<Token![,]>()?;
-        }
-
-        let mut mixins = Vec::new();
-        while input.peek(Token![:]) {
-            input.parse::<Token![:]>()?;
-            mixins.push(input.parse()?);
-
-            if input.peek(Token![,]) {
-                input.parse::<Token![,]>()?;
-            }
-        }
-
-        let mut fields = Vec::new();
-        let mut values = Vec::new();
-        loop {
-            if input.is_empty() {
-                break;
-            }
-
-            fields.push(input.parse()?);
-            input.parse::<Token![:]>()?;
-            values.push(input.parse()?);
-
-            if input.peek(Token![,]) {
-                input.parse::<Token![,]>()?;
-            }
-        }
-
-        Ok(Create {
-            ty,
-            mixins,
-            fields,
-            values,
-        })
+    if input.peek(Token![,]) {
+      input.parse::<Token![,]>()?;
     }
+
+    let mut mixins = Vec::new();
+    while input.peek(Token![:]) {
+      input.parse::<Token![:]>()?;
+      mixins.push(input.parse()?);
+
+      if input.peek(Token![,]) {
+        input.parse::<Token![,]>()?;
+      }
+    }
+
+    let mut fields = Vec::new();
+    let mut values = Vec::new();
+    loop {
+      if input.is_empty() {
+        break;
+      }
+
+      fields.push(input.parse()?);
+      input.parse::<Token![:]>()?;
+      values.push(input.parse()?);
+
+      if input.peek(Token![,]) {
+        input.parse::<Token![,]>()?;
+      }
+    }
+
+    Ok(Create {
+      ty,
+      mixins,
+      fields,
+      values,
+    })
+  }
 }
 
 pub fn create_macro(input: TokenStream) -> TokenStream {
-    let Create {
-        ty,
-        mixins,
-        fields,
-        values,
-    } = parse_macro_input!(input);
+  let Create {
+    ty,
+    mixins,
+    fields,
+    values,
+  } = parse_macro_input!(input);
 
-    let ident_builder = ident_builder(&ty);
-    let ident_mixins_enum = ident_mixins_enum(&ty);
+  let ident_builder = ident_builder(&ty);
+  let ident_mixins_enum = ident_mixins_enum(&ty);
 
-    let mut mixins = mixins.iter();
-    let value = if let Some(mixin) = mixins.next() {
-        let initial = quote! {
-            factori::Mixin::default(#ident_mixins_enum::#mixin)
-        };
-        mixins.fold(initial, |acc, mixin| {
-            quote! {
-                factori::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
-            }
-        })
-    } else {
-        quote! { factori::Default::default () }
+  let mut mixins = mixins.iter();
+  let value = if let Some(mixin) = mixins.next() {
+    let initial = quote! {
+        factori::Mixin::default(#ident_mixins_enum::#mixin)
     };
+    mixins.fold(initial, |acc, mixin| {
+      quote! {
+          factori::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
+      }
+    })
+  } else {
+    quote! { factori::Default::default () }
+  };
 
-    let quoted = quote! {
-        factori::Builder::build(#ident_builder {
-            #(
-                #fields: #values,
-            )*
-            .. #value
-        })
-    };
+  let quoted = quote! {
+      factori::Builder::build(#ident_builder {
+          #(
+              #fields: #values,
+          )*
+          .. #value
+      })
+  };
 
-    quoted.into()
+  quoted.into()
 }
