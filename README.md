@@ -1,32 +1,37 @@
-# Factori [![Build Status](https://travis-ci.org/mjkillough/factori.svg?branch=master)](https://travis-ci.org/mjkillough/factori) [![Crates.io](https://img.shields.io/crates/v/factori.svg)](https://crates.io/crates/factori) [![Docs.rs](https://docs.rs/factori/badge.svg)](https://docs.rs/factori/)
+# Factorio
 
 A testing factory library for Rust, inspired by
-[FactoryBot](https://github.com/thoughtbot/factory_bot). 🤖 🦀
 
-Factori makes it easy to instantiate your test objects/fixtures in tests while
+[FactoryBot](https://github.com/thoughtbot/factory_bot). 🤖 🦀
+[mjkillough/factori](https://github.com/mjkillough/factori)
+
+A fork of [mjkillough/factori](https://github.com/mjkillough/factori) library,
+to add additional features.
+
+factorio makes it easy to instantiate your test objects/fixtures in tests while
 providing an ergonomic syntax for defining how they are instantiated.
 
-Factori works on stable Rust >=1.45.
+factorio works on stable Rust >=1.45.
 
 ## Documentation
 
-See [API documentation](https://docs.rs/factori/latest/factori/).
+See [API documentation](https://docs.rs/factorio/latest/factorio/).
 
 ## Example
 
-Factori provides two macros: `factori!`, which defines a factory for a type,
+factorio provides two macros: `factorio!`, which defines a factory for a type,
 and `create!` which instantiates it:
 
 ```rust
 #[macro_use]
-extern crate factori;
+extern crate factorio;
 
 pub struct Vehicle {
     number_wheels: u8,
     electric: bool,
 }
 
-factori!(Vehicle, {
+factorio!(Vehicle, {
     default {
         number_wheels = 4,
         electric = false,
@@ -55,7 +60,7 @@ fn main() {
 ```
 
 More examples are available in the
-[`tests/`](https://github.com/mjkillough/factori/tree/master/tests) directory.
+[`tests/`](https://github.com/mjkillough/factorio/tree/master/tests) directory.
 
 ## Testing
 
