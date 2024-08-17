@@ -10,10 +10,10 @@ use super::{ident_builder, ident_mixins_enum};
 /// ... becomes:
 ///
 /// Create {
-///     ty: 'ty',
-///     mixins: vec!['mixin1', 'mixin2'],
-///     fields: vec!['field1', 'field2'],
-///     values: vec!['value1', 'value2'],
+///   ty: 'ty',
+///   mixins: vec!['mixin1', 'mixin2'],
+///   fields: vec!['field1', 'field2'],
+///   values: vec!['value1', 'value2'],
 /// }
 ///
 /// fields and values can also be the transient ones
@@ -25,7 +25,7 @@ struct Create {
 }
 
 impl Create {
-  /// Parses the rest of the create macro input returns a Create
+  /// Parses the rest of the create macro input
   ///
   /// This helps use it in other macros like
   /// create!(ty, <input>);
@@ -133,7 +133,7 @@ pub fn create_macro(input: TokenStream) -> TokenStream {
 /// CreateVec {
 ///   ty: 'ty',
 ///   count: 3,
-///   Create {
+///   create: Create {
 ///     ty: 'ty',
 ///     mixins: vec!['mixin1', 'mixin2'],
 ///     fields: vec!['field1', 'field2'],
