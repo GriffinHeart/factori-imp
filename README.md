@@ -16,50 +16,58 @@ factorio works on stable Rust >=1.45.
 ## Differences with factori
 
 - Transient attributes as first class citizens see [tests/transient.rs](https://github.com/GriffinHeart/factorio/blob/main/tests/transient.rs)
+- Adds `create_vec!` macro [see tests/create_vec.rs](https://github.com/GriffinHeart/factorio/blob/main/tests/create_vec.rs)
 
 ## Documentation
 
-See [API documentation](https://docs.rs/factorio/latest/factorio/).
+[https://docs.rs/factorio/latest/factorio/](https://docs.rs/factorio/latest/factorio/)
 
 ## Example
 
-factorio provides two macros: `factorio!`, which defines a factory for a type,
-and `create!` which instantiates it:
+factorio provides three macros:
+
+- `factorio!`, which defines a factory for a type
+- `create!` which instantiates it
+- `create_vec!` which instantiates many
 
 ```rust
 #[macro_use]
 extern crate factorio;
 
 pub struct Vehicle {
-    number_wheels: u8,
-    electric: bool,
+  number_wheels: u8,
+  electric: bool,
 }
 
 factorio!(Vehicle, {
-    default {
-        number_wheels = 4,
-        electric = false,
-    }
+  default {
+    number_wheels = 4,
+    electric = false,
+  }
 
-    mixin bike {
-        number_wheels = 2,
-    }
+  mixin bike {
+    number_wheels = 2,
+  }
 });
 
 fn main() {
-    let default = create!(Vehicle);
-    assert_eq!(default.number_wheels, 4);
-    assert_eq!(default.electric, false);
+  let default = create!(Vehicle);
+  assert_eq!(default.number_wheels, 4);
+  assert_eq!(default.electric, false);
 
-    // Its type is Vehicle, nothing fancy:
-    let vehicle: Vehicle = default;
+  // Its type is Vehicle, nothing fancy:
+  let vehicle: Vehicle = default;
 
-    let three_wheels = create!(Vehicle, number_wheels: 3);
-    assert_eq!(three_wheels.number_wheels, 3);
+  let three_wheels = create!(Vehicle, number_wheels: 3);
+  assert_eq!(three_wheels.number_wheels, 3);
 
-    let electric_bike = create!(Vehicle, :bike, electric: true);
-    assert_eq!(electric_bike.number_wheels, 2);
-    assert_eq!(electric_bike.electric, true);
+  let electric_bike = create!(Vehicle, :bike, electric: true);
+  assert_eq!(electric_bike.number_wheels, 2);
+  assert_eq!(electric_bike.electric, true);
+
+  // We can create many vehicles
+  let many_motorcycles = create_vec!(Vehicle, 5, number_wheels: 2);
+  assert_eq!(many_motorcycles.len(), 5);
 }
 ```
 
