@@ -7,10 +7,13 @@
 //!  - A [`factorio!()`] macro which is used to define factories.
 //!  - A [`create!()`] macro which is used to instantiate objects from
 //!    factories.
+//!  - A [`create_vec!()`] macro which is used to instantiate many objects from
+//!    factories
 //!
 //! [FactoryBot]: https://github.com/thoughtbot/factory_bot
 //! [`factorio!()`]: macro.factorio.html
 //! [`create!()`]: macro.create.html
+//! [`create_vec!()`]: macro.create_vec.html
 //!
 //! ## Example
 //!
@@ -19,41 +22,41 @@
 //! extern crate factorio;
 //!
 //! pub struct Vehicle {
-//!     number_wheels: u8,
-//!     electric: bool,
+//!   number_wheels: u8,
+//!   electric: bool,
 //! }
 //!
 //! factorio!(Vehicle, {
-//!     default {
-//!         number_wheels = 4,
-//!         electric = false,
-//!     }
+//!   default {
+//!     number_wheels = 4,
+//!     electric = false,
+//!   }
 //!
-//!     mixin bike {
-//!         number_wheels = 2,
-//!     }
+//!   mixin bike {
+//!     number_wheels = 2,
+//!   }
 //! });
 //!
 //! fn main() {
-//!     let default = create!(Vehicle);
-//!     assert_eq!(default.number_wheels, 4);
-//!     assert_eq!(default.electric, false);
+//!   let default = create!(Vehicle);
+//!   assert_eq!(default.number_wheels, 4);
+//!   assert_eq!(default.electric, false);
 //!
-//!     // Its type is Vehicle, nothing fancy:
-//!     let vehicle: Vehicle = default;
+//!   // Its type is Vehicle, nothing fancy:
+//!   let vehicle: Vehicle = default;
 //!
-//!     let three_wheels = create!(Vehicle, number_wheels: 3);
-//!     assert_eq!(three_wheels.number_wheels, 3);
+//!   let three_wheels = create!(Vehicle, number_wheels: 3);
+//!   assert_eq!(three_wheels.number_wheels, 3);
 //!
-//!     let electric_bike = create!(Vehicle, :bike, electric: true);
-//!     assert_eq!(electric_bike.number_wheels, 2);
-//!     assert_eq!(electric_bike.electric, true);
+//!   let electric_bike = create!(Vehicle, :bike, electric: true);
+//!   assert_eq!(electric_bike.number_wheels, 2);
+//!   assert_eq!(electric_bike.electric, true);
 //! }
 //! ```
 //!
 //! More examples are available in the [`tests/`] alongside the crate.
 //!
-//! [`tests/`]: https://github.com/mjkillough/factori/tree/master/tests
+//! [`tests/`]: https://github.com/GriffinHeart/factorio/tree/main/tests
 //!
 //! ## How it works
 //!
@@ -76,28 +79,28 @@
 //! # fn main() { }
 //! #
 //! struct Vehicle {
-//!     number_wheels: u8,
+//!   number_wheels: u8,
 //! }
 //!
 //! mod factories {
-//!     use super::Vehicle;
+//!   use super::Vehicle;
 //!
-//!     factorio!(Vehicle, {
-//!         default {
-//!             number_wheels = 4
-//!         }
-//!     });
+//!   factorio!(Vehicle, {
+//!     default {
+//!       number_wheels = 4
+//!     }
+//!   });
 //! }
 //!
 //! #[cfg(test)]
 //! mod tests {
-//!     use super::{Vehicle, factories::*};
+//!   use super::{Vehicle, factories::*};
 //!
-//!     #[test]
-//!     fn some_test() {
-//!         let vehicle = create!(Vehicle);
-//!         assert_eq!(vehicle.number_wheels, 4);
-//!     }
+//!   #[test]
+//!   fn some_test() {
+//!     let vehicle = create!(Vehicle);
+//!     assert_eq!(vehicle.number_wheels, 4);
+//!   }
 //! }
 //! ```
 //!
@@ -141,14 +144,87 @@
 ///    to `create!()`.
 ///  - Zero or more named fields with values, `field: value`.
 ///
-///    These override both the factory's default values and the provided
-///    mixins. Each field from the `default` block can appear zero or one
-///    times.
+///    These override both the factory's default and transitive values and the
+///    provided mixins. Each field from the `default` block can appear zero or
+///    one times.
 ///
 /// # Example
 ///
 /// ```
 /// # #[macro_use] extern crate factorio;
+/// #
+/// struct Vehicle {
+///   registration: &'static str,
+///   number_wheels: u8,
+///   number_seats: u8,
+/// }
+///
+/// factorio!(Vehicle, {
+///   default {
+///     registration = "",
+///     number_wheels = 4,
+///     number_seats = 5,
+///   }
+///
+///   mixin motorbike {
+///     number_wheels = 2,
+///     number_seats = 1,
+///   }
+///
+///   mixin trike {
+///     number_wheels = 3
+///   }
+/// });
+///
+/// struct User {
+///   age: u8
+/// }
+///
+/// factorio!(User, {
+///   default {
+///     age: u8 = 42,
+///   }
+///
+///   transitive {
+///     double_age: bool = false
+///   }
+///
+///   builder {
+///     let age = if double_age { age * 2 } else { age };
+///     User { age }
+///   }
+/// })
+///
+/// fn main () {
+///   let trike = create!(Vehicle, :motorbike, :trike, registration: "J105 SRA");
+///   assert_eq!(trike.number_wheels, 3);
+///   assert_eq!(trike.number_seats, 1);
+///   let user = create!(User, double_age: true);
+///   assert_eq!(user.age, 84);
+/// }
+/// ```
+///
+/// [`factorio!()`]: macro.factori.html
+#[macro_export]
+macro_rules! create {
+  // We define a simple macro so that the documentation doesn't state this
+  // is a re-export from factorio-impl. This also allows us to write docs here.
+  ($($input:tt)*) => {
+      $crate::factorio_impl::create!($($input)*);
+  }
+}
+
+/// A macro to instantiate multiple instances of a factory.
+///
+/// Supports everything that [`create!()`] supports but additionally takes a
+/// count to create a vec of count instances.
+///
+/// Count can be any expression that evaluates into a number.
+///
+/// # Example
+///
+/// ```
+/// #  #[macro_use] extern crate factorio;
 /// #
 /// struct Vehicle {
 ///     registration: &'static str,
@@ -162,39 +238,18 @@
 ///         number_wheels = 4,
 ///         number_seats = 5,
 ///     }
-///
-///     mixin motorbike {
-///         number_wheels = 2,
-///         number_seats = 1,
-///     }
-///
-///     mixin trike {
-///         number_wheels = 3
-///     }
-/// });
+/// }
 ///
 /// fn main () {
-///     let trike = create!(Vehicle, :motorbike, :trike, registration: "J105 SRA");
-///     assert_eq!(trike.number_wheels, 3);
-///     assert_eq!(trike.number_seats, 1);
+///     let many_vehicles = create_vec!(Vehicle, 2+5, :motorbike);
+///     assert_eq!(many_vehicles.len(), 7);
 /// }
 /// ```
-///
-/// [`factorio!()`]: macro.factori.html
-#[macro_export]
-macro_rules! create {
-    // We define a simple macro so that the documentation doesn't state this
-    // is a re-export from factorio-impl. This also allows us to write docs here.
-    ($($input:tt)*) => {
-        $crate::factorio_impl::create!($($input)*);
-    }
-}
-
 #[macro_export]
 macro_rules! create_vec {
-    ($($input:tt)*) => {
-        $crate::factorio_impl::create_vec!($($input)*);
-    }
+  ($($input:tt)*) => {
+    $crate::factorio_impl::create_vec!($($input)*);
+  }
 }
 
 #[doc(hidden)]
@@ -208,6 +263,10 @@ pub use factorio_impl;
 ///  - A `default { }` block.
 ///
 ///    This provides default values for all fields in the struct.
+///  - A optional `transient { }` block.
+///
+///    This allows using values that are not part of the type in the builder
+///    block, these values can also be set in mixins, see more below.
 ///  - Zero or more `mixin name { }` blocks.
 ///
 ///    These provide values to override the default values of one or more
@@ -225,23 +284,23 @@ pub use factorio_impl;
 /// # #[macro_use] extern crate factorio;
 /// #
 /// struct Order {
-///     id: u64,
-///     shipped: bool,
+///   id: u64,
+///   shipped: bool,
 /// }
 ///
 /// factorio!(Order, {
-///     default {
-///         id = 1,
-///         shipped = false,
-///     }
+///   default {
+///     id = 1,
+///     shipped = false,
+///   }
 ///
-///     mixin shipped {
-///         shipped = true,
-///     }
+///   mixin shipped {
+///     shipped = true,
+///   }
 /// });
 ///
 /// fn main() {
-///     let order = create!(Order, :shipped);
+///   let order = create!(Order, :shipped);
 /// }
 /// ```
 ///
@@ -262,40 +321,51 @@ pub use factorio_impl;
 /// achieve this, the types of fields must be provided inside the `default`
 /// block.
 ///
+/// When using `transitive` { } block you must also use `builder` block so
+/// that you can change how the type and values are created based on the
+/// transitive fields
+///
 /// ```
 /// # #[macro_use] extern crate factorio;
 /// #
 /// pub struct Order(u64, bool);
 ///
 /// factorio!(Order, {
-///     default {
-///         id: u64 = 1,
-///         shipped: bool = false,
-///     }
+///   default {
+///     id: u64 = 1,
+///     shipped: bool = false,
+///   }
 ///
-///     builder {
-///         // All fields from default { } are in scope here with their values.
-///         // We construct a tuple struct here, but we could easily call a
-///         // method like Order::new().
-///         Order(id, shipped)
-///     }
+///   transitive {
+///     base_id: u64 = 0,
+///   }
 ///
-///     mixin shipped {
-///         shipped = true,
-///     }
+///   builder {
+///     // All fields from default { } and transitive { } are in scope here
+///     // with their values. We construct a tuple struct here, but we could
+///     // easily call a method like Order::new().
+///     let id = base_id + id;
+///     Order(id, shipped)
+///   }
+///
+///   mixin shipped {
+///     shipped = true,
+///   }
 /// });
 ///
 /// fn main() {
-///     let order = create!(Order, :shipped, id: 2);
+///   let order = create!(Order, :shipped, id: 2);
+///   let another_order = create!(Order, id: 5, base_id: 200);
+///   assert_eq!(another_order.id, 205);
 /// }
 /// ```
 #[macro_export]
 macro_rules! factorio {
-    // We define a simple macro so that the documentation doesn't state this
-    // is a re-export from factorio-impl. This also allows us to write docs here.
-    ($($input:tt)*) => {
-        $crate::factorio_impl::define!($($input)*);
-    }
+  // We define a simple macro so that the documentation doesn't state this
+  // is a re-export from factorio-impl. This also allows us to write docs here.
+  ($($input:tt)*) => {
+    $crate::factorio_impl::define!($($input)*);
+  }
 }
 
 #[doc(hidden)]
