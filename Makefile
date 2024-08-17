@@ -1,6 +1,7 @@
 .PHONY: test, lint
 
 test:
+	cargo test --doc
 	cargo nextest run
 
 lint: format clippy
