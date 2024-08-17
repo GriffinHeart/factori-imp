@@ -144,7 +144,7 @@
 ///    to `create!()`.
 ///  - Zero or more named fields with values, `field: value`.
 ///
-///    These override both the factory's default and transitive values and the
+///    These override both the factory's default and transient values and the
 ///    provided mixins. Each field from the `default` block can appear zero or
 ///    one times.
 ///
@@ -176,7 +176,7 @@
 ///   }
 /// });
 ///
-/// struct User {
+/// pub struct User {
 ///   age: u8
 /// }
 ///
@@ -185,7 +185,7 @@
 ///     age: u8 = 42,
 ///   }
 ///
-///   transitive {
+///   transient {
 ///     double_age: bool = false
 ///   }
 ///
@@ -193,7 +193,7 @@
 ///     let age = if double_age { age * 2 } else { age };
 ///     User { age }
 ///   }
-/// })
+/// });
 ///
 /// fn main () {
 ///   let trike = create!(Vehicle, :motorbike, :trike, registration: "J105 SRA");
@@ -238,10 +238,10 @@ macro_rules! create {
 ///         number_wheels = 4,
 ///         number_seats = 5,
 ///     }
-/// }
+/// });
 ///
 /// fn main () {
-///     let many_vehicles = create_vec!(Vehicle, 2+5, :motorbike);
+///     let many_vehicles = create_vec!(Vehicle, 2+5, number_wheels: 2);
 ///     assert_eq!(many_vehicles.len(), 7);
 /// }
 /// ```
@@ -321,12 +321,12 @@ pub use factorio_impl;
 /// achieve this, the types of fields must be provided inside the `default`
 /// block.
 ///
-/// When using `transitive` { } block you must also use `builder` block so
+/// When using `transient` { } block you must also use `builder` block so
 /// that you can change how the type and values are created based on the
-/// transitive fields
+/// transient fields
 ///
 /// ```
-/// # #[macro_use] extern crate factorio;
+/// #  #[macro_use] extern crate factorio;
 /// #
 /// pub struct Order(u64, bool);
 ///
@@ -336,12 +336,12 @@ pub use factorio_impl;
 ///     shipped: bool = false,
 ///   }
 ///
-///   transitive {
+///   transient {
 ///     base_id: u64 = 0,
 ///   }
 ///
 ///   builder {
-///     // All fields from default { } and transitive { } are in scope here
+///     // All fields from default { } and transient { } are in scope here
 ///     // with their values. We construct a tuple struct here, but we could
 ///     // easily call a method like Order::new().
 ///     let id = base_id + id;
@@ -356,7 +356,7 @@ pub use factorio_impl;
 /// fn main() {
 ///   let order = create!(Order, :shipped, id: 2);
 ///   let another_order = create!(Order, id: 5, base_id: 200);
-///   assert_eq!(another_order.id, 205);
+///   assert_eq!(another_order.0, 205);
 /// }
 /// ```
 #[macro_export]
