@@ -190,6 +190,13 @@ macro_rules! create {
     }
 }
 
+#[macro_export]
+macro_rules! create_vec {
+    ($($input:tt)*) => {
+        $crate::factorio_impl::create_vec!($($input)*);
+    }
+}
+
 #[doc(hidden)]
 pub use factorio_impl;
 
