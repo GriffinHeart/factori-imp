@@ -21,7 +21,7 @@ factori-imp works on stable Rust >=1.45.
 
 ## Documentation
 
-[https://docs.rs/factori-imp/latest/factori/](https://docs.rs/factori-imp/latest/factori/)
+[https://docs.rs/factori-imp/latest/factori_imp/](https://docs.rs/factori-imp/latest/factori_imp/)
 
 ## Example
 
