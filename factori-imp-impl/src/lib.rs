@@ -6,12 +6,12 @@ mod define;
 use proc_macro2::Ident;
 
 fn ident_builder(ty: &Ident) -> Ident {
-  let ident = format!("_Factorio_Builder_{}", ty);
+  let ident = format!("_Factori_Builder_{}", ty);
   Ident::new(&ident, ty.span())
 }
 
 fn ident_mixins_enum(ty: &Ident) -> Ident {
-  let ident = format!("_Factorio_Mixins_{}", ty);
+  let ident = format!("_Factori_Mixins_{}", ty);
   Ident::new(&ident, ty.span())
 }
 

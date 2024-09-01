@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate factorio;
+extern crate factori_imp;
 
 // Define struct in a separate module. As its fields are private, this means
 // we can't use struct literal syntax to construct it.
@@ -29,7 +29,7 @@ mod separate_module {
 
 use separate_module::Vehicle;
 
-factorio!(Vehicle, {
+factori!(Vehicle, {
     default {
         number_wheels: u8 = 4,
         electric: bool = false,

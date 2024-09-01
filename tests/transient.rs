@@ -1,11 +1,11 @@
 #[macro_use]
-extern crate factorio;
+extern crate factori_imp;
 
 pub struct User {
   name: String,
 }
 
-factorio!(User, {
+factori!(User, {
   default {
     name: String = "Richard".to_string()
   }

@@ -8,8 +8,8 @@ lint: format clippy
 
 format:
 	cargo fmt
-	cd factorio-impl; cargo fmt
+	cd factori-imp-impl; cargo fmt
 
 clippy:
 	cargo clippy --all-targets --message-format=short
-	cd factorio-impl; cargo clippy --all-targets --message-format=short
+	cd factori-imp-impl; cargo clippy --all-targets --message-format=short
