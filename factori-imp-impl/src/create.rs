@@ -87,19 +87,19 @@ impl Create {
     let mut mixins = mixins.iter();
     let value = if let Some(mixin) = mixins.next() {
       let initial = quote! {
-          factorio::Mixin::default(#ident_mixins_enum::#mixin)
+          factori::Mixin::default(#ident_mixins_enum::#mixin)
       };
       mixins.fold(initial, |acc, mixin| {
         quote! {
-            factorio::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
+            factori::Mixin::extend(#ident_mixins_enum::#mixin, #acc)
         }
       })
     } else {
-      quote! { factorio::Default::default () }
+      quote! { factori::Default::default () }
     };
 
     let quoted = quote! {
-        factorio::Builder::build(
+        factori::Builder::build(
           #[allow(clippy::needless_update)]
           #ident_builder {
             #(

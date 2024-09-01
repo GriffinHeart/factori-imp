@@ -1,9 +1,9 @@
 [package]
-name = "factorio-impl"
+name = "factori-imp-impl"
 version = "1.1.0"
-description = "You shouldn't use this crate directly. It's internal to factorio-imp."
+description = "You shouldn't use this crate directly. It's internal to factori-imp."
 license = "MIT"
-repository = "https://github.com/GriffinHeart/factorio"
+repository = "https://github.com/GriffinHeart/factori-imp"
 keywords = ["factory", "testing", "test", "fixture"]
 categories = ["development-tools::testing"]
 authors = ["Hugo Almeida <hugofalmeida@gmail.com>", "Michael Killough <michaeljkillough@gmail.com>"]
