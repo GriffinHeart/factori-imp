@@ -24,3 +24,8 @@ pub fn define(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 pub fn create(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
   create::create_macro(input)
 }
+
+#[proc_macro]
+pub fn create_vec(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+  create::create_vec_macro(input)
+}

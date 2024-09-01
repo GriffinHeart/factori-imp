@@ -7,22 +7,22 @@ pub struct Vehicle {
 }
 
 factorio!(Vehicle, {
-    default {
-        number_wheels = 4,
-        electric = false,
-    }
+  default {
+      number_wheels = 4,
+      electric = false,
+  }
 
-    mixin bike {
-        number_wheels = 2,
-    }
+  mixin bike {
+      number_wheels = 2,
+  }
 
-    mixin trike {
-        number_wheels = 3,
-    }
+  mixin trike {
+      number_wheels = 3,
+  }
 
-    mixin electric {
-        electric = true,
-    }
+  mixin electric {
+      electric = true,
+  }
 });
 
 #[test]
