@@ -1,4 +1,4 @@
-# Factorio
+# factori-imp(roved)
 
 A testing factory library for Rust, inspired by:
 
@@ -8,38 +8,39 @@ A testing factory library for Rust, inspired by:
 A fork of [mjkillough/factori](https://github.com/mjkillough/factori) library,
 to add additional features.
 
-factorio makes it easy to instantiate your test objects/fixtures in tests while
-providing an ergonomic syntax for defining how they are instantiated.
+factori-imp(roved) makes it easy to instantiate your test objects/fixtures in
+tests while providing an ergonomic syntax for defining how they are
+instantiated.
 
-factorio works on stable Rust >=1.45.
+factori-imp works on stable Rust >=1.45.
 
 ## Differences with factori
 
-- Transient attributes as first class citizens see [tests/transient.rs](https://github.com/GriffinHeart/factorio/blob/main/tests/transient.rs)
-- Adds `create_vec!` macro [see tests/create_vec.rs](https://github.com/GriffinHeart/factorio/blob/main/tests/create_vec.rs)
+- Transient attributes as first class citizens see [tests/transient.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/transient.rs)
+- Adds `create_vec!` macro [see tests/create_vec.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/create_vec.rs)
 
 ## Documentation
 
-[https://docs.rs/factorio/latest/factorio/](https://docs.rs/factorio/latest/factorio/)
+[https://docs.rs/factori-imp/latest/factori/](https://docs.rs/factori-imp/latest/factori/)
 
 ## Example
 
-factorio provides three macros:
+factori-imp(roved) provides three macros:
 
-- `factorio!`, which defines a factory for a type
+- `factori!`, which defines a factory for a type
 - `create!` which instantiates it
 - `create_vec!` which instantiates many
 
 ```rust
 #[macro_use]
-extern crate factorio;
+extern crate factori;
 
 pub struct Vehicle {
   number_wheels: u8,
   electric: bool,
 }
 
-factorio!(Vehicle, {
+factori!(Vehicle, {
   default {
     number_wheels = 4,
     electric = false,
@@ -72,7 +73,7 @@ fn main() {
 ```
 
 More examples are available in the
-[`tests/`](https://github.com/GriffinHeart/factorio/tree/main/tests) directory.
+[`tests/`](https://github.com/GriffinHeart/factori-imp/tree/main/tests) directory.
 
 ## Testing
 
