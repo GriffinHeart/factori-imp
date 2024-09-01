@@ -63,7 +63,7 @@
 //! Behind the scenes, the [`factori!()`] macro generates some extra types to
 //! encode the default values and mixins for each factory.
 //!
-//! The [`create!()`] macro expects the generated `_factori` types to be in
+//! The [`create!()`] macro expects the generated `_Factori` types to be in
 //! scope. If the factory is instantiated in the same module that it is
 //! defined, this will work as expected. If the factory is defined in a
 //! separate module, then it is recommended that you do a glob import to bring
@@ -109,7 +109,7 @@
 //! types or their names. However, the implementation is quite simple and you
 //! are encouraged to run [`cargo-expand`] in order to see the generated code.
 //!
-//! The generated types are all prefixed with `_factori` and are unlikely to
+//! The generated types are all prefixed with `_Factori` and are unlikely to
 //! clash with any types in your crate. It is a little gross but it is all
 //! in the name of testing convenience.
 //!
