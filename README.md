@@ -17,7 +17,7 @@ factori-imp works on stable Rust >=1.45.
 ## Differences with factori
 
 - Transient attributes as first class citizens see [tests/transient.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/transient.rs)
-- Adds `create_vec!` macro [see tests/create_vec.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/create_vec.rs)
+- Adds `create_vec!` macro see [tests/create_vec.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/create_vec.rs)
 
 ## Documentation
 
