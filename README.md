@@ -24,6 +24,19 @@ factori-imp works on stable Rust >=1.45.
 
 [https://docs.rs/factori-imp/latest/factori_imp/](https://docs.rs/factori-imp/latest/factori_imp/)
 
+### In place replacement for factori
+
+You can use factori-imp without changing any code, in your Cargo.toml:
+
+```diff
+- factori = "1.1.0"
++ factori = { package = "factori-imp", version = "0.9.2" }
+```
+
+or just add it as a regular dependency and then rename the crate in your crate root:
+
+`extern crate factori-imp as factori;`
+
 ## Example
 
 factori-imp(roved) provides three macros:
