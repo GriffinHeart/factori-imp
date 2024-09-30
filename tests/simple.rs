@@ -7,25 +7,25 @@ pub struct Vehicle {
 }
 
 pub struct Garage {
-    vehicle: Vec<Vehicle>,
+  vehicle: Vec<Vehicle>,
 }
 
 factori!(Vehicle, {
   default {
-      number_wheels = 4,
-      electric = false,
+    number_wheels = 4,
+    electric = false,
   }
 
   mixin bike {
-      number_wheels = 2,
+    number_wheels = 2,
   }
 
   mixin trike {
-      number_wheels = 3,
+    number_wheels = 3,
   }
 
   mixin electric {
-      electric = true,
+    electric = true,
   }
 });
 
