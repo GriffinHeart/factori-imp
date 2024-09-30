@@ -30,9 +30,9 @@ factori!(Vehicle, {
 });
 
 factori!(Garage, {
-    default {
-        vehicle = vec![create!(Vehicle)]
-    }
+  default {
+    vehicle = create_vec!(Vehicle, 3),
+  }
 });
 
 #[test]
@@ -44,10 +44,10 @@ fn simple_struct() {
 
 #[test]
 fn nested_struct() {
-    let default = create!(Garage);
-    assert_eq!(default.vehicle.len(), 1);
-    assert_eq!(default.vehicle[0].number_wheels, 4);
-    assert_eq!(default.vehicle[0].electric, false);
+  let default = create!(Garage);
+  assert_eq!(default.vehicle.len(), 3);
+  assert_eq!(default.vehicle[0].number_wheels, 4);
+  assert_eq!(default.vehicle[0].electric, false);
 }
 
 #[test]
