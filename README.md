@@ -16,8 +16,10 @@ factori-imp works on stable Rust >=1.45.
 
 ## Differences with factori
 
-- Transient attributes as first class citizens see [tests/transient.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/transient.rs)
-- Adds `create_vec!` macro see [tests/create_vec.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/create_vec.rs)
+- Transient attributes as first class citizens, see [tests/transient.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/transient.rs)
+- Adds `create_vec!` macro, see [tests/create_vec.rs](https://github.com/GriffinHeart/factori-imp/blob/main/tests/create_vec.rs)
+- `create*` macros can be used in factory declarations, see [tests/simple:46](https://github.com/GriffinHeart/factori-imp/blob/main/tests/simple.rs#L46)
+  - Contributed  by @wuerges, thank you
 - Fixes all clippy warnings due to usage of the macros
 
 ## Documentation
