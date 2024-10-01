@@ -7,32 +7,32 @@ pub struct Vehicle {
 }
 
 pub struct Garage {
-    vehicle: Vec<Vehicle>,
+  vehicle: Vec<Vehicle>,
 }
 
 factori!(Vehicle, {
   default {
-      number_wheels = 4,
-      electric = false,
+    number_wheels = 4,
+    electric = false,
   }
 
   mixin bike {
-      number_wheels = 2,
+    number_wheels = 2,
   }
 
   mixin trike {
-      number_wheels = 3,
+    number_wheels = 3,
   }
 
   mixin electric {
-      electric = true,
+    electric = true,
   }
 });
 
 factori!(Garage, {
-    default {
-        vehicle = vec![create!(Vehicle)]
-    }
+  default {
+    vehicle = create_vec!(Vehicle, 3),
+  }
 });
 
 #[test]
@@ -44,10 +44,10 @@ fn simple_struct() {
 
 #[test]
 fn nested_struct() {
-    let default = create!(Garage);
-    assert_eq!(default.vehicle.len(), 1);
-    assert_eq!(default.vehicle[0].number_wheels, 4);
-    assert_eq!(default.vehicle[0].electric, false);
+  let default = create!(Garage);
+  assert_eq!(default.vehicle.len(), 3);
+  assert_eq!(default.vehicle[0].number_wheels, 4);
+  assert_eq!(default.vehicle[0].electric, false);
 }
 
 #[test]
