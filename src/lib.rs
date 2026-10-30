@@ -210,7 +210,7 @@ macro_rules! create {
   // We define a simple macro so that the documentation doesn't state this
   // is a re-export from factori-imp-impl. This also allows us to write docs here.
   ($($input:tt)*) => {
-      $crate::factori_imp_impl::create!($($input)*);
+      $crate::factori_imp_impl::create!($($input)*)
   }
 }
 
@@ -248,7 +248,7 @@ macro_rules! create {
 #[macro_export]
 macro_rules! create_vec {
   ($($input:tt)*) => {
-    $crate::factori_imp_impl::create_vec!($($input)*);
+    $crate::factori_imp_impl::create_vec!($($input)*)
   }
 }
 
